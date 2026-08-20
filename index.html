@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CHI TIME TRACKER</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 95%;
+      max-width: 420px; /* keeps it narrow for mobile portrait */
+      background: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 6px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
+
+    select, input {
+      width: 95%;
+      padding: 4px;
+      font-size: 13px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      margin: 15px auto 0;
+      display: block;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>CHI TIME TRACKER</h2>
+    <table id="tracker">
+      <tr>
+        <th>Tagging</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Minutes</th>
+      </tr>
+      <!-- 7 activity rows with dropdowns -->
+      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start1" readonly></td><td><input type="time" id="end1" readonly></td><td><input type="number" id="minutes1"></td></tr>
+      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start2" readonly></td><td><input type="time" id="end2" readonly></td><td><input type="number" id="minutes2"></td></tr>
+      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start3" readonly></td><td><input type="time" id="end3" readonly></td><td><input type="number" id="minutes3"></td></tr>
+      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start4" readonly></td><td><input type="time" id="end4" readonly></td><td><input type="number" id="minutes4"></td></tr>
+      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start5" readonly></td><td><input type="time" id="end5" readonly></td><td><input type="number" id="minutes5"></td></tr>
+      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start6" readonly></td><td><input type="time" id="end6" readonly></td><td><input type="number" id="minutes6"></td></tr>
+      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start7" readonly></td><td><input type="time" id="end7" readonly></td><td><input type="number" id="minutes7"></td></tr>
+      <!-- Final End row -->
+      <tr>
+        <td>End</td>
+        <td></td>
+        <td><input type="time" id="finalEnd"></td>
+        <td></td>
+      </tr>
+    </table>
+    <button onclick="computeTimes()">Compute Schedule</button>
+  </div>
+
+  <script>
+    function computeTimes() {
+      let finalEnd = document.getElementById("finalEnd").value;
+      if (!finalEnd) return alert("Please enter the final End Time!");
+
+      let endDate = new Date("1970-01-01T" + finalEnd + ":00");
+
+      for (let row = 7; row >= 1; row--) {
+        let minutes = parseInt(document.getElementById("minutes" + row).value);
+        if (!minutes) continue;
+
+        let startDate = new Date(endDate.getTime() - minutes * 60000);
+
+        let hhStart = String(startDate.getHours()).padStart(2, '0');
+        let mmStart = String(startDate.getMinutes()).padStart(2, '0');
+        document.getElementById("start" + row).value = hhStart + ":" + mmStart;
+
+        let hhEnd = String(endDate.getHours()).padStart(2, '0');
+        let mmEnd = String(endDate.getMinutes()).padStart(2, '0');
+        document.getElementById("end" + row).value = hhEnd + ":" + mmEnd;
+
+        endDate = startDate;
+      }
+    }
+  </script>
+</body>
+</html>
