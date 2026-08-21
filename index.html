@@ -1,128 +1,527 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="dark">
 <head>
+  <meta charset="UTF-8">
   <title>CHI TIME TRACKER</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
   <style>
+    /* Accenture Brand Color Palette + Elegant Premium Styling */
+    :root[data-theme="dark"] {
+      --bg-color: #08080a;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1a0b2e 0%, #08080a 75%);
+      --card-bg: rgba(18, 18, 24, 0.9);
+      --card-border: rgba(161, 0, 255, 0.2);
+      --text-main: #ffffff;
+      --text-muted: #a1a1aa;
+      --text-subtle: #71717a;
+      --th-bg: rgba(26, 26, 36, 0.7);
+      --input-bg: rgba(10, 10, 14, 0.8);
+      --input-border: rgba(255, 255, 255, 0.12);
+      --input-focus: #a100ff;
+      --input-focus-shadow: rgba(161, 0, 255, 0.35);
+      --input-text: #ffffff;
+      --clock-bg: rgba(161, 0, 255, 0.1);
+      --clock-border: rgba(161, 0, 255, 0.25);
+      --textarea-bg: rgba(10, 10, 14, 0.85);
+      --btn-toggle-bg: rgba(255, 255, 255, 0.06);
+      --btn-toggle-text: #ffffff;
+      --highlight-bg: rgba(161, 0, 255, 0.18);
+      --accent-purple: #a100ff;
+      --btn-compute-bg: linear-gradient(135deg, #a100ff 0%, #7000ff 100%);
+      --btn-compute-shadow: rgba(161, 0, 255, 0.4);
+      --btn-copy-bg: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      --btn-copy-shadow: rgba(16, 185, 129, 0.3);
+      --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(161, 0, 255, 0.12);
+    }
+
+    :root[data-theme="light"] {
+      --bg-color: #f8f6fc;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #ffffff 0%, #f3edf8 100%);
+      --card-bg: #ffffff;
+      --card-border: rgba(161, 0, 255, 0.15);
+      --text-main: #09090b;
+      --text-muted: #646473;
+      --text-subtle: #9494a8;
+      --th-bg: #f4f0fa;
+      --input-bg: #ffffff;
+      --input-border: #d4d4d8;
+      --input-focus: #a100ff;
+      --input-focus-shadow: rgba(161, 0, 255, 0.2);
+      --input-text: #09090b;
+      --clock-bg: #f0e6ff;
+      --clock-border: #d8b4fe;
+      --textarea-bg: #faf8fc;
+      --btn-toggle-bg: #f4f0fa;
+      --btn-toggle-text: #09090b;
+      --highlight-bg: #f3e8ff;
+      --accent-purple: #a100ff;
+      --btn-compute-bg: linear-gradient(135deg, #a100ff 0%, #7000ff 100%);
+      --btn-compute-shadow: rgba(161, 0, 255, 0.25);
+      --btn-copy-bg: linear-gradient(135deg, #059669 0%, #047857 100%);
+      --btn-copy-shadow: rgba(5, 150, 105, 0.2);
+      --card-shadow: 0 20px 40px -15px rgba(161, 0, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      background-image: var(--bg-gradient);
+      color: var(--text-main);
       margin: 0;
-      padding: 20px;
+      padding: 32px 16px;
       display: flex;
       justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
     .container {
-      width: 95%;
-      max-width: 420px; /* keeps it narrow for mobile portrait */
-      background: #ffffff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 480px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: var(--card-shadow);
+      transition: all 0.4s ease;
+      position: relative;
     }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 15px;
-      color: #333;
+    /* Accenture Purple Gradient Top Line Accent */
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, var(--accent-purple) 50%, transparent 100%);
+      opacity: 0.9;
     }
 
+    /* Header Styling */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .header-left h2 {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--text-main);
+    }
+
+    .header-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 5px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    .header-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .ph-clock {
+      font-size: 11px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-main);
+      background: var(--clock-bg);
+      padding: 5px 12px;
+      border-radius: 30px;
+      border: 1px solid var(--clock-border);
+      white-space: nowrap;
+      letter-spacing: -0.2px;
+    }
+
+    .theme-toggle {
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--btn-toggle-bg);
+      color: var(--btn-toggle-text);
+      border: 1px solid var(--clock-border);
+      padding: 5px 12px;
+      border-radius: 30px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-purple);
+      transform: translateY(-1px);
+    }
+
+    /* Table & Form Controls */
     table {
       width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 13px;
+      table-layout: fixed;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
     }
 
     th, td {
-      border: 1px solid #ddd;
+      border-bottom: 1px solid var(--card-border);
+      border-right: 1px solid var(--card-border);
       padding: 6px;
       text-align: center;
+      transition: background-color 0.2s ease;
+    }
+
+    th:last-child, td:last-child {
+      border-right: none;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
     }
 
     th {
-      background-color: #f0f0f0;
-      font-weight: bold;
+      background-color: var(--th-bg);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px 4px;
+    }
+
+    tr.active-row td {
+      background-color: var(--highlight-bg) !important;
     }
 
     select, input {
-      width: 95%;
-      padding: 4px;
-      font-size: 13px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      width: 100%;
+      height: 32px;
+      padding: 2px 4px;
+      font-size: 12px;
+      font-family: inherit;
+      background-color: var(--input-bg);
+      color: var(--input-text);
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      box-sizing: border-box;
+      text-align: center;
+      text-align-last: center;
+      outline: none;
+      transition: all 0.2s ease;
     }
 
-    button {
-      margin: 15px auto 0;
-      display: block;
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: #fff;
-      font-size: 14px;
-      border: none;
-      border-radius: 5px;
+    select:focus, input:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px var(--input-focus-shadow);
+    }
+
+    input[type="time"] {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    input[type="time"]::-webkit-calendar-picker-indicator {
+      margin-left: 0;
       cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
     }
 
-    button:hover {
-      background-color: #0056b3;
+    input[type="time"]::-webkit-calendar-picker-indicator:hover {
+      opacity: 1;
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px 16px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-compute {
+      background: var(--btn-compute-bg);
+      box-shadow: 0 4px 16px var(--btn-compute-shadow);
+    }
+
+    .btn-compute:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+    }
+
+    .btn-clear {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-clear:hover {
+      background-color: rgba(255, 255, 255, 0.12);
+      border-color: var(--text-muted);
+    }
+
+    .btn-copy {
+      background: var(--btn-copy-bg);
+      box-shadow: 0 4px 14px var(--btn-copy-shadow);
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .btn-copy:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+    }
+
+    /* Summary Terminal Block */
+    .summary-section {
+      margin-top: 22px;
+    }
+
+    .summary-section label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 140px;
+      padding: 12px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      background-color: var(--textarea-bg);
+      color: var(--input-text);
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      resize: vertical;
+      box-sizing: border-box;
+      white-space: pre;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    textarea:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px var(--input-focus-shadow);
     }
   </style>
 </head>
 <body>
+
   <div class="container">
-    <h2>CHI TIME TRACKER</h2>
+    <!-- Header -->
+    <div class="header-bar">
+      <div class="header-left">
+        <h2>CHI TIME TRACKER</h2>
+        <div class="header-subtitle" id="phDate">Loading date...</div>
+      </div>
+      <div class="header-controls">
+        <div class="ph-clock" id="phClock">PST: --:--:-- --</div>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀️ Light Mode</button>
+      </div>
+    </div>
+
     <table id="tracker">
-      <tr>
-        <th>Tagging</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>Minutes</th>
-      </tr>
-      <!-- 7 activity rows with dropdowns -->
-      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start1" readonly></td><td><input type="time" id="end1" readonly></td><td><input type="number" id="minutes1"></td></tr>
-      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start2" readonly></td><td><input type="time" id="end2" readonly></td><td><input type="number" id="minutes2"></td></tr>
-      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start3" readonly></td><td><input type="time" id="end3" readonly></td><td><input type="number" id="minutes3"></td></tr>
-      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start4" readonly></td><td><input type="time" id="end4" readonly></td><td><input type="number" id="minutes4"></td></tr>
-      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start5" readonly></td><td><input type="time" id="end5" readonly></td><td><input type="number" id="minutes5"></td></tr>
-      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start6" readonly></td><td><input type="time" id="end6" readonly></td><td><input type="number" id="minutes6"></td></tr>
-      <tr><td><select><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start7" readonly></td><td><input type="time" id="end7" readonly></td><td><input type="number" id="minutes7"></td></tr>
-      <!-- Final End row -->
-      <tr>
-        <td>End</td>
-        <td></td>
-        <td><input type="time" id="finalEnd"></td>
-        <td></td>
-      </tr>
+      <colgroup>
+        <col style="width: 34%;">
+        <col style="width: 23%;">
+        <col style="width: 23%;">
+        <col style="width: 20%;">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Tagging</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Minutes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><select id="tag1"><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start1" readonly></td><td><input type="time" id="end1" readonly></td><td><input type="number" id="minutes1"></td></tr>
+        <tr><td><select id="tag2"><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start2" readonly></td><td><input type="time" id="end2" readonly></td><td><input type="number" id="minutes2"></td></tr>
+        <tr><td><select id="tag3"><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start3" readonly></td><td><input type="time" id="end3" readonly></td><td><input type="number" id="minutes3"></td></tr>
+        <tr><td><select id="tag4"><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start4" readonly></td><td><input type="time" id="end4" readonly></td><td><input type="number" id="minutes4"></td></tr>
+        <tr><td><select id="tag5"><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start5" readonly></td><td><input type="time" id="end5" readonly></td><td><input type="number" id="minutes5"></td></tr>
+        <tr><td><select id="tag6"><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start6" readonly></td><td><input type="time" id="end6" readonly></td><td><input type="number" id="minutes6"></td></tr>
+        <tr><td><select id="tag7"><option value="">--Select--</option><option>LUNCH</option><option>BREAK</option><option>COACHING</option><option>MEETING</option><option>WELLNESS</option><option>FB LEARNING</option><option>NON FB LEARNING</option><option>PRODUCTION</option></select></td><td><input type="time" id="start7" readonly></td><td><input type="time" id="end7" readonly></td><td><input type="number" id="minutes7"></td></tr>
+        <tr>
+          <td style="font-weight: 700; color: var(--text-muted);">END</td>
+          <td></td>
+          <td><input type="time" id="finalEnd"></td>
+          <td></td>
+        </tr>
+      </tbody>
     </table>
-    <button onclick="computeTimes()">Compute Schedule</button>
+
+    <div class="button-group">
+      <button class="btn btn-compute" onclick="computeTimes()">Compute Schedule</button>
+      <button class="btn btn-clear" onclick="clearForm()">Clear</button>
+    </div>
+
+    <div class="summary-section">
+      <label for="summaryBox">Schedule Summary</label>
+      <textarea id="summaryBox" readonly placeholder="Click 'Compute Schedule' to generate summary..."></textarea>
+      <button class="btn btn-copy" onclick="copySummary()">Copy Summary</button>
+    </div>
   </div>
 
   <script>
+    function updateClock() {
+      const now = new Date();
+      const timeOptions = {
+        timeZone: 'Asia/Manila',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      };
+      document.getElementById('phClock').innerText = `PST: ${now.toLocaleTimeString('en-US', timeOptions)}`;
+
+      const dateOptions = {
+        timeZone: 'Asia/Manila',
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      };
+      document.getElementById('phDate').innerText = now.toLocaleDateString('en-US', dateOptions);
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const themeBtn = document.getElementById("themeBtn");
+      
+      if (html.getAttribute("data-theme") === "dark") {
+        html.setAttribute("data-theme", "light");
+        themeBtn.innerText = "🌙 Dark Mode";
+      } else {
+        html.setAttribute("data-theme", "dark");
+        themeBtn.innerText = "☀️ Light Mode";
+      }
+    }
+
+    const table = document.getElementById("tracker");
+    table.addEventListener("focusin", (e) => {
+      const tr = e.target.closest("tr");
+      if (tr && tr.parentNode.tagName === "TBODY" && tr.rowIndex > 0) {
+        document.querySelectorAll("#tracker tr").forEach(row => row.classList.remove("active-row"));
+        tr.classList.add("active-row");
+      }
+    });
+
     function computeTimes() {
       let finalEnd = document.getElementById("finalEnd").value;
       if (!finalEnd) return alert("Please enter the final End Time!");
 
+      for (let row = 1; row <= 7; row++) {
+        document.getElementById("start" + row).value = "";
+        document.getElementById("end" + row).value = "";
+      }
+
       let endDate = new Date("1970-01-01T" + finalEnd + ":00");
+      let summaryLines = [];
 
       for (let row = 7; row >= 1; row--) {
         let minutes = parseInt(document.getElementById("minutes" + row).value);
-        if (!minutes) continue;
+        if (!minutes || minutes <= 0) continue;
 
         let startDate = new Date(endDate.getTime() - minutes * 60000);
 
         let hhStart = String(startDate.getHours()).padStart(2, '0');
         let mmStart = String(startDate.getMinutes()).padStart(2, '0');
-        document.getElementById("start" + row).value = hhStart + ":" + mmStart;
+        let startTime = hhStart + ":" + mmStart;
+        document.getElementById("start" + row).value = startTime;
 
         let hhEnd = String(endDate.getHours()).padStart(2, '0');
         let mmEnd = String(endDate.getMinutes()).padStart(2, '0');
-        document.getElementById("end" + row).value = hhEnd + ":" + mmEnd;
+        let endTime = hhEnd + ":" + mmEnd;
+        document.getElementById("end" + row).value = endTime;
+
+        let tag = document.getElementById("tag" + row).value || "UNTAGGED";
+        let paddedTag = (tag + ":").padEnd(17, ' ');
+        summaryLines.unshift(`${paddedTag}${startTime} - ${endTime} (${minutes} mins)`);
 
         endDate = startDate;
       }
+
+      document.getElementById("summaryBox").value = summaryLines.join("\n");
+    }
+
+    function copySummary() {
+      let summaryBox = document.getElementById("summaryBox");
+      if (!summaryBox.value) return alert("Nothing to copy! Compute a schedule first.");
+
+      summaryBox.select();
+      summaryBox.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(summaryBox.value)
+        .then(() => alert("Summary copied to clipboard!"))
+        .catch(() => alert("Failed to copy. Please copy manually."));
+    }
+
+    function clearForm() {
+      for (let row = 1; row <= 7; row++) {
+        document.getElementById("tag" + row).value = "";
+        document.getElementById("start" + row).value = "";
+        document.getElementById("end" + row).value = "";
+        document.getElementById("minutes" + row).value = "";
+      }
+      document.getElementById("finalEnd").value = "";
+      document.getElementById("summaryBox").value = "";
+      document.querySelectorAll("#tracker tr").forEach(row => row.classList.remove("active-row"));
     }
   </script>
 </body>
